@@ -17,6 +17,7 @@ class Card_Game_1 extends Phaser.Scene {
     this.gameNum = 1;
     this.point = 0;
     this.complete = false;
+    this.narration = "man";
     /* END-USER-CTR-CODE */
 	}
 
@@ -142,6 +143,36 @@ class Card_Game_1 extends Phaser.Scene {
 		txt_content.setStyle({ "color": "#ffffffff", "fontFamily": "TheJamsil5Bold", "fontSize": "14px" });
 		txt_content.setWordWrapWidth(270, true);
 
+		// rect_girl
+		const rect_girl = this.add.rectangle(282, 840, 100, 50);
+		rect_girl.visible = false;
+		rect_girl.isStroked = true;
+		rect_girl.strokeColor = 0;
+		rect_girl.lineWidth = 5;
+
+		// rect_man
+		const rect_man = this.add.rectangle(140, 840, 100, 50);
+		rect_man.visible = false;
+		rect_man.isFilled = true;
+		rect_man.fillColor = 14201779;
+		rect_man.isStroked = true;
+		rect_man.strokeColor = 0;
+		rect_man.lineWidth = 5;
+
+		// txt_man
+		const txt_man = this.add.text(140, 841, "", {});
+		txt_man.setOrigin(0.5, 0.5);
+		txt_man.visible = false;
+		txt_man.text = "음성 남";
+		txt_man.setStyle({ "color": "#000000ff", "fontFamily": "TheJamsil5Bold", "fontSize": "25px", "stroke": "#1927fcff", "strokeThickness":2});
+
+		// txt_girl
+		const txt_girl = this.add.text(282, 841, "", {});
+		txt_girl.setOrigin(0.5, 0.5);
+		txt_girl.visible = false;
+		txt_girl.text = "음성 여";
+		txt_girl.setStyle({ "color": "#000000ff", "fontFamily": "TheJamsil5Bold", "fontSize": "25px", "stroke": "#1927fcff", "strokeThickness":2});
+
 		// lists
 		const cards = [card_6_2, card_4_1, card_1_1, card_2_2, card_5_1, card_5_2, card_4_2, card_6_1, card_1_2, card_3_2, card_2_1, card_3_1];
 
@@ -163,6 +194,10 @@ class Card_Game_1 extends Phaser.Scene {
 		this.txt_day = txt_day;
 		this.txt_pattern = txt_pattern;
 		this.txt_content = txt_content;
+		this.rect_girl = rect_girl;
+		this.rect_man = rect_man;
+		this.txt_man = txt_man;
+		this.txt_girl = txt_girl;
 		this.cards = cards;
 
 		this.events.emit("scene-awake");
@@ -204,6 +239,14 @@ class Card_Game_1 extends Phaser.Scene {
 	txt_pattern;
 	/** @type {Phaser.GameObjects.Text} */
 	txt_content;
+	/** @type {Phaser.GameObjects.Rectangle} */
+	rect_girl;
+	/** @type {Phaser.GameObjects.Rectangle} */
+	rect_man;
+	/** @type {Phaser.GameObjects.Text} */
+	txt_man;
+	/** @type {Phaser.GameObjects.Text} */
+	txt_girl;
 	/** @type {Phaser.GameObjects.Image[]} */
 	cards;
 
@@ -245,10 +288,12 @@ class Card_Game_1 extends Phaser.Scene {
       const greenCard = this.cards[cardIndex];
       greenCard.setTexture("card_green");
       greenCard.setName(index);
+      greenCard.data = word.do;
       cardIndex++;
       const pinkCard = this.cards[cardIndex];
       pinkCard.setTexture("card_pink");
       pinkCard.setName(index);
+      pinkCard.data = word.stop;
 
       const goText = this.add.text(0, 0, word.do, textStyle);
 
@@ -287,6 +332,10 @@ class Card_Game_1 extends Phaser.Scene {
             this.scene.launch("Feedback", {
               gameNum: this.gameNum,
               correct: true,
+              narration: this.narration,
+              sentence: `${this.quest.pattern.replace(" ~", "")} ${
+                greenCard.data
+              } ${pinkCard.data}`,
             });
             this.clickCard.setVisible(false);
             pinkCard.setVisible(false);
@@ -320,6 +369,20 @@ class Card_Game_1 extends Phaser.Scene {
         this.ending();
       }
     });
+
+    this.txt_man.setInteractive({ cursor: "pointer" }).on("pointerdown", () => {
+      this.rect_man.setFillStyle(0xd8b3b3);
+      this.rect_girl.setFillStyle(0xffffff);
+      this.narration = "man";
+    });
+
+    this.txt_girl
+      .setInteractive({ cursor: "pointer" })
+      .on("pointerdown", () => {
+        this.rect_man.setFillStyle(0xffffff);
+        this.rect_girl.setFillStyle(0xd8b3b3);
+        this.narration = "girl";
+      });
   }
 
   update(time, delta) {

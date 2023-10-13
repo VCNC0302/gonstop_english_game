@@ -3,64 +3,75 @@
 /* START OF COMPILED CODE */
 
 class Feedback extends Phaser.Scene {
+  constructor() {
+    super("Feedback");
 
-	constructor() {
-		super("Feedback");
-
-		/* START-USER-CTR-CODE */
+    /* START-USER-CTR-CODE */
     // Write your code here.
     /* END-USER-CTR-CODE */
-	}
+  }
 
-	/** @returns {void} */
-	editorCreate() {
+  /** @returns {void} */
+  editorCreate() {
+    // rectangle_2
+    const rectangle_2 = this.add.rectangle(960, 538, 1920, 1080);
+    rectangle_2.isFilled = true;
+    rectangle_2.fillColor = 4868682;
+    rectangle_2.fillAlpha = 0.8;
 
-		// rectangle_2
-		const rectangle_2 = this.add.rectangle(960, 538, 1920, 1080);
-		rectangle_2.isFilled = true;
-		rectangle_2.fillColor = 4868682;
-		rectangle_2.fillAlpha = 0.8;
+    // rect
+    const rect = this.add.rectangle(960, 540, 800, 700);
+    rect.isFilled = true;
+    rect.isStroked = true;
+    rect.strokeColor = 0;
+    rect.lineWidth = 10;
 
-		// rect
-		const rect = this.add.rectangle(960, 540, 800, 700);
-		rect.isFilled = true;
-		rect.isStroked = true;
-		rect.strokeColor = 0;
-		rect.lineWidth = 10;
+    // txt_msg
+    const txt_msg = this.add.text(960, 485, "", {});
+    txt_msg.setOrigin(0.5, 0.5);
+    txt_msg.setStyle({
+      align: "center",
+      color: "#000000ff",
+      fontFamily: "TheJamsil5Bold",
+      fontSize: "60px",
+    });
 
-		// txt_msg
-		const txt_msg = this.add.text(960, 485, "", {});
-		txt_msg.setOrigin(0.5, 0.5);
-		txt_msg.setStyle({ "align": "center", "color": "#000000ff", "fontFamily": "TheJamsil5Bold", "fontSize": "60px" });
+    // txt_ok
+    const txt_ok = this.add.text(903, 753, "", {});
+    txt_ok.text = "확인";
+    txt_ok.setStyle({
+      color: "#000000ff",
+      fontFamily: "TheJamsil5Bold",
+      fontSize: "60px",
+      stroke: "#1927fcff",
+      strokeThickness: 3,
+    });
 
-		// txt_ok
-		const txt_ok = this.add.text(903, 753, "", {});
-		txt_ok.text = "확인";
-		txt_ok.setStyle({ "color": "#000000ff", "fontFamily": "TheJamsil5Bold", "fontSize": "60px", "stroke": "#1927fcff", "strokeThickness":3});
+    // rectangle_3
+    const rectangle_3 = this.add.rectangle(960, 787.8961793223158, 150, 80);
+    rectangle_3.isStroked = true;
+    rectangle_3.strokeColor = 0;
+    rectangle_3.lineWidth = 5;
 
-		// rectangle_3
-		const rectangle_3 = this.add.rectangle(960, 787.8961793223158, 150, 80);
-		rectangle_3.isStroked = true;
-		rectangle_3.strokeColor = 0;
-		rectangle_3.lineWidth = 5;
+    this.txt_msg = txt_msg;
+    this.txt_ok = txt_ok;
 
-		this.txt_msg = txt_msg;
-		this.txt_ok = txt_ok;
+    this.events.emit("scene-awake");
+  }
 
-		this.events.emit("scene-awake");
-	}
+  /** @type {Phaser.GameObjects.Text} */
+  txt_msg;
+  /** @type {Phaser.GameObjects.Text} */
+  txt_ok;
 
-	/** @type {Phaser.GameObjects.Text} */
-	txt_msg;
-	/** @type {Phaser.GameObjects.Text} */
-	txt_ok;
-
-	/* START-USER-CODE */
+  /* START-USER-CODE */
 
   // Write your code here
   init(data) {
     this.correct = data.correct;
     this.gameNum = data.gameNum;
+    this.narration = data.narration;
+    this.sentence = data.sentence;
   }
   create() {
     this.editorCreate();
@@ -73,6 +84,21 @@ class Feedback extends Phaser.Scene {
       this.scene.resume(`Card_Game_${this.gameNum}`);
       this.scene.setVisible(false, this);
     });
+    this.sound.play(!this.correct ? "incorrect" : "correct");
+    if (this.correct) {
+      //   this.sound.play(`${this.sentence}_${this.narration}`);
+      const config = {
+        key: "firecracker",
+        frames: "effect",
+        repeat: -1,
+      };
+      this.anims.create(config);
+      const x = 1920 / 2;
+      const y = 1080 / 2;
+      this.add.sprite(x - 200, y - 200).play("firecracker");
+      this.add.sprite(x, y - 300).play("firecracker");
+      this.add.sprite(x + 300, y - 100).play("firecracker");
+    }
   }
 
   /* END-USER-CODE */

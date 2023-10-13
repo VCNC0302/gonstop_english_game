@@ -42,6 +42,47 @@
                 "key": "card_stroke_pink"
             },
             {
+                "url": [
+                    "assets/audio/correct.mp3"
+                ],
+                "type": "audio",
+                "key": "correct"
+            },
+            {
+                "url": "assets/effect.png",
+                "frameConfig": {
+                    "frameWidth": 256,
+                    "frameHeight": 256,
+                    "startFrame": 0,
+                    "endFrame": -1,
+                    "spacing": 0,
+                    "margin": 0
+                },
+                "type": "spritesheet",
+                "key": "effect"
+            },
+            {
+                "url": [
+                    "assets/audio/day1/I was happy to watch TV_girl.mp3"
+                ],
+                "type": "audio",
+                "key": "I was happy to watch TV_girl"
+            },
+            {
+                "url": [
+                    "assets/audio/day1/I was happy to watch TV_man.mp3"
+                ],
+                "type": "audio",
+                "key": "I was happy to watch TV_man"
+            },
+            {
+                "url": [
+                    "assets/audio/incorrect.mp3"
+                ],
+                "type": "audio",
+                "key": "incorrect"
+            },
+            {
                 "url": "assets/play.png",
                 "type": "image",
                 "key": "play"
